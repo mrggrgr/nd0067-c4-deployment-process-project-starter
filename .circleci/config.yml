@@ -1,15 +1,15 @@
 version: 2.1
 orbs:
   node: circleci/node@4.1.0
-  eb: circleci/aws-elastic-beanstalk@1.0.0
-  aws-cli: circleci/aws-cli@1.3.1
+  eb: circleci/aws-elastic-beanstalk@2.0.1
+  aws-cli: circleci/aws-cli@2.0.3
 jobs:
   build:
     docker:
       - image: "cimg/base:stable"
     steps:
       - node/install:
-          node-version: 14.18.0
+          node-version: 15.8.0
       - checkout
       - run:
           name: Install Front-End Dependencies
@@ -35,7 +35,8 @@ jobs:
     docker:
       - image: "cimg/base:stable"
     steps:
-      - node/install
+      - node/install:
+          node-version: 15.8.0
       - eb/setup
       - aws-cli/setup
       - checkout
@@ -47,6 +48,8 @@ workflows:
   udagram:
     jobs:
       - build
+          context:
+            - aws
       - Trigger Deployment:
           filters:
             branches:
@@ -56,5 +59,7 @@ workflows:
           requires:
             - build
       - deploy:
+          context:
+            - aws
           requires:
             - Trigger Deployment
