@@ -47,7 +47,7 @@ jobs:
 workflows:
   udagram:
     jobs:
-      - build
+      - build:
           context:
             - aws
       - Trigger Deployment:
