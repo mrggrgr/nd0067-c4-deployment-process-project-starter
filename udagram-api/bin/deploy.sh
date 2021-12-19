@@ -1,5 +1,4 @@
-cd ../
-npm ci 
+npm ci
 npm run build
 cd www || exit
 eb setenv \
